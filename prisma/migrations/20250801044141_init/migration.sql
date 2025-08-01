@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Modul" ALTER COLUMN "tahun" SET DATA TYPE TEXT;

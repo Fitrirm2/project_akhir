@@ -8,10 +8,31 @@ datasource db {
 }
 
 model User {
-  id            String   @id @default(cuid())
-  name          String?
-  email         String   @unique
-  password      String
-  emailVerified DateTime?
-  createdAt     DateTime @default(now())
+  id     String   @id @default(uuid())
+  email  String   @unique
+  name   String?
+  password String
+  isVerified Boolean @default(false)
+  otp        String?  
+  otpExpires DateTime? 
+  modul Modul []
+}
+
+model Modul {
+  id             String   @id @default(uuid())
+  judul          String
+  mataPelajaran  String
+  kelas          String
+  penulis        String
+  tahun          String
+  capaian        String
+  detailPenggunaan String
+  rancangan      String
+  langkah        String
+  media          String
+  assessment     String
+  createdAt      DateTime @default(now())
+
+  userId         String
+  user           User     @relation(fields: [userId], references: [id])
 }
