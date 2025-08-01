@@ -5,8 +5,8 @@ export async function PUT(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const { id } = params;
   const data = await req.json();
+  const { id } = params;
 
   try {
     const updated = await prisma.modul.update({
@@ -16,7 +16,7 @@ export async function PUT(
 
     return NextResponse.json(updated);
   } catch (error) {
-    console.error("PUT Error:", error);
+    console.error("PUT error:", error);
     return NextResponse.json(
       { error: "Modul tidak ditemukan atau gagal update" },
       { status: 500 }
@@ -37,7 +37,7 @@ export async function DELETE(
 
     return new NextResponse(null, { status: 204 });
   } catch (error) {
-    console.error("DELETE Error:", error);
+    console.error("DELETE error:", error);
     return NextResponse.json(
       { error: "Gagal hapus modul" },
       { status: 500 }
