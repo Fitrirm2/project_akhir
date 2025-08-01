@@ -3,9 +3,9 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function PUT(
   req: NextRequest,
-  context: { params: { id: string } }
+  { params }: { params: { id: string } }
 ) {
-  const { id } = context.params; 
+  const { id } = params;
   const data = await req.json();
 
   try {
@@ -16,6 +16,7 @@ export async function PUT(
 
     return NextResponse.json(updated);
   } catch (error) {
+    console.error("PUT Error:", error);
     return NextResponse.json(
       { error: "Modul tidak ditemukan atau gagal update" },
       { status: 500 }
@@ -25,9 +26,9 @@ export async function PUT(
 
 export async function DELETE(
   req: NextRequest,
-  context: { params: { id: string } }
+  { params }: { params: { id: string } }
 ) {
-  const { id } = context.params;
+  const { id } = params;
 
   try {
     await prisma.modul.delete({
@@ -36,6 +37,7 @@ export async function DELETE(
 
     return new NextResponse(null, { status: 204 });
   } catch (error) {
+    console.error("DELETE Error:", error);
     return NextResponse.json(
       { error: "Gagal hapus modul" },
       { status: 500 }
