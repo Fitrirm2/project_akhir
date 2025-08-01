@@ -5,18 +5,16 @@ export async function PUT(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const data = await req.json();
-  const { id } = params;
-
   try {
+    const data = await req.json();
     const updated = await prisma.modul.update({
-      where: { id },
+      where: { id: params.id },
       data,
     });
 
     return NextResponse.json(updated);
   } catch (error) {
-    console.error("PUT error:", error);
+    console.error("PUT Error:", error);
     return NextResponse.json(
       { error: "Modul tidak ditemukan atau gagal update" },
       { status: 500 }
@@ -28,16 +26,14 @@ export async function DELETE(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const { id } = params;
-
   try {
     await prisma.modul.delete({
-      where: { id },
+      where: { id: params.id },
     });
 
     return new NextResponse(null, { status: 204 });
   } catch (error) {
-    console.error("DELETE error:", error);
+    console.error("DELETE Error:", error);
     return NextResponse.json(
       { error: "Gagal hapus modul" },
       { status: 500 }
