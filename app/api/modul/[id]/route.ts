@@ -1,23 +1,30 @@
 import { prisma } from "@/lib/prisma";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
 export async function PUT(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  const { id } = params;
+  const data = await req.json();
+
   try {
-    const data = await req.json();
     const updated = await prisma.modul.update({
-      where: { id: params.id },
+      where: { id },
       data,
     });
 
-    return NextResponse.json(updated);
+    return new Response(JSON.stringify(updated), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
   } catch (error) {
-    console.error("PUT Error:", error);
-    return NextResponse.json(
-      { error: "Modul tidak ditemukan atau gagal update" },
-      { status: 500 }
+    return new Response(
+      JSON.stringify({ error: "Modul tidak ditemukan atau gagal update" }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      }
     );
   }
 }
@@ -26,17 +33,21 @@ export async function DELETE(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  const { id } = params;
+
   try {
     await prisma.modul.delete({
-      where: { id: params.id },
+      where: { id },
     });
 
-    return new NextResponse(null, { status: 204 });
+    return new Response(null, { status: 204 });
   } catch (error) {
-    console.error("DELETE Error:", error);
-    return NextResponse.json(
-      { error: "Gagal hapus modul" },
-      { status: 500 }
+    return new Response(
+      JSON.stringify({ error: "Gagal hapus modul" }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      }
     );
   }
 }
